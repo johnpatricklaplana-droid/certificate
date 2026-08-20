@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { get, post } from "../apis/Api";
 
 interface SchoolRequest {
     id: string;
@@ -6,40 +7,47 @@ interface SchoolRequest {
     email: string;
     address: string;
     website: string;
-    status: "pending" | "rejected";
 }
 
-const initialRequests: SchoolRequest[] = [
-    {
-        id: "1",
-        name: "Urdaneta City University",
-        email: "johnpatricklaplana@gmail.com",
-        address: "San Vicente West, City of Urdaneta, Pangasinan, 1906",
-        website: "http://www.ucu.edu.ph",
-        status: "pending",
-    },
-];
-
 export default function SchoolRegistrationRequests() {
-    const [requests, setRequests] = useState<SchoolRequest[]>(initialRequests);
+    const [requests, setRequests] = useState<SchoolRequest[]>([]);
     const [sentIds, setSentIds] = useState<Set<string>>(new Set());
 
-    const pending = requests.filter((r) => r.status === "pending");
+    const handleApprove = async (school: SchoolRequest) => {
 
-    const handleApprove = (id: string) => {
-        // TODO: call POST /admin/schools/{id}/approve
-        setSentIds((prev) => new Set(prev).add(id));
+        const body = {
+            toEmail: school.email,
+            schoolName: school.name,
+            token: "TODO"
+        };
+        
+        const result = await post('http://localhost:8080/api/platform-admin/email/school', body);
+
     };
 
     const handleReject = (id: string) => {
-        // TODO: call POST /admin/schools/{id}/reject
+        
         setRequests((prev) =>
             prev.map((r) => (r.id === id ? { ...r, status: "rejected" } : r))
         );
     };
 
+    useEffect(() => {
+        
+        const getIt = async () => {
+
+            const result = await get('http://localhost:8080/api/platform-admin/school');
+
+            setRequests(result.response_body);
+
+        };
+
+        getIt();
+
+    }, []);
+
     return (
-        <div className="max-w-3xl">
+        <div className="max-w-3xl mx-auto py-8">
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="text-xl font-medium text-gray-900">Registration requests</h1>
@@ -48,11 +56,11 @@ export default function SchoolRegistrationRequests() {
                     </p>
                 </div>
                 <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-blue-50 text-blue-700">
-                    {pending.length} pending
+                    {requests.length} pending
                 </span>
             </div>
 
-            {pending.length === 0 ? (
+            {requests.length === 0 ? (
                 <div className="text-center py-16 border border-dashed border-gray-200 rounded-xl">
                     <p className="text-sm font-medium text-gray-900">No pending requests</p>
                     <p className="text-sm text-gray-500 mt-1">
@@ -61,7 +69,7 @@ export default function SchoolRegistrationRequests() {
                 </div>
             ) : (
                 <div className="border border-gray-200 rounded-xl overflow-hidden bg-white divide-y divide-gray-100">
-                    {pending.map((r) => (
+                    {requests.map((r) => (
                         <div key={r.id} className="p-5 flex gap-4">
                             <div className="w-10 h-10 shrink-0 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center text-sm font-medium">
                                 {r.name.slice(0, 2).toUpperCase()}
@@ -100,7 +108,7 @@ export default function SchoolRegistrationRequests() {
                                     Reject
                                 </button>
                                 <button
-                                    onClick={() => handleApprove(r.id)}
+                                    onClick={() => handleApprove(r)}
                                     disabled={sentIds.has(r.id)}
                                     className="text-sm px-3 py-1.5 rounded-md border border-blue-200 text-blue-700 hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:hover:bg-transparent"
                                 >

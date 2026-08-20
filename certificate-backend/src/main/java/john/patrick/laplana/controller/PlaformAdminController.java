@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import john.patrick.laplana.dto.EmailAndPasswordDto;
 import john.patrick.laplana.dto.GlobalResponse;
+import john.patrick.laplana.dto.VerificationEmailRequests;
 import john.patrick.laplana.entities.PlatformAdmin;
+import john.patrick.laplana.service.EmailService;
 import john.patrick.laplana.service.JwtService;
 import john.patrick.laplana.service.PlatformAdminService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -28,6 +29,7 @@ public class PlaformAdminController {
 
     private final PlatformAdminService platformAdminService;
     private final JwtService jwtService;
+    private final EmailService emailService;
     
     @PostMapping("/api/auth/admin")
     public ResponseEntity<GlobalResponse> postMethodName(
@@ -56,6 +58,14 @@ public class PlaformAdminController {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(new GlobalResponse(200, platformAdminService.getSchoolRegistrationRequest(), LocalDateTime.now(), true));
+    }
+    
+    @PostMapping("/api/platform-admin/email/school")
+    public ResponseEntity<GlobalResponse> sendEmailVerification(@RequestBody VerificationEmailRequests entity) {
+        emailService.sendVerificationEmail(entity);
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(new GlobalResponse(200, "todo", LocalDateTime.now(), true));
     }
     
 
