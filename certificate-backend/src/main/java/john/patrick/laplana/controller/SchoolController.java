@@ -23,7 +23,7 @@ public class SchoolController {
 
     private final SchoolService schoolService;
     
-    @PostMapping("/api/school")
+    @PostMapping("/api/public/school")
     public ResponseEntity<GlobalResponse> postMethodName(
         @RequestPart("school") SchoolDto school,
         @RequestPart("schoolLogo") MultipartFile schoolLogo

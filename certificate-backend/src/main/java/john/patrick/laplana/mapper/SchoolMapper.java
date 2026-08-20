@@ -14,6 +14,10 @@ public interface SchoolMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "verified", ignore = true)
     @Mapping(target = "verifiedAt", ignore = true)
+    @Mapping(target = "tokenExpiresAt", ignore = true)
+    @Mapping(target = "verificationToken", ignore = true)
     School toSchool(SchoolDto schoolDto);
+
+    SchoolDto toSchoolDto(School school);
     
 } 
