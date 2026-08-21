@@ -6,10 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 import john.patrick.laplana.dto.GlobalResponse;
 import john.patrick.laplana.dto.SchoolDto;
 import john.patrick.laplana.entities.School;
+import john.patrick.laplana.helpers.ResponseHelper;
 import john.patrick.laplana.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,21 +35,16 @@ public class SchoolController {
     ) {
         schoolService.registerSchool(school, schoolLogo);
         
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(new GlobalResponse(201, "successful one", LocalDateTime.now(), true));
+        return ResponseHelper.createdResponse("successful one");
     }
 
     @GetMapping("/api/public/schools/verify")
     public ResponseEntity<GlobalResponse> verifyInstitution(
-        @RequestParam String token,
+        @RequestParam UUID token,
         @RequestParam String response
     ) {
         schoolService.verifySchool(token, response);
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(new GlobalResponse(200, "successful one", LocalDateTime.now(), true));
-        
+        return ResponseHelper.okResponse("successful one");
     }   
 
 }

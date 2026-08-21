@@ -14,6 +14,6 @@ public interface SchoolRepository extends JpaRepository<School, UUID> {
     @Query("SELECT s FROM School s WHERE s.isVerified = false")
     List<School> getSchoolRegistrationRequests();
 
-    Optional<School> findByVerificationToken(String token);
+    Optional<School> findByVerificationToken(UUID token);
     
 }

@@ -18,6 +18,8 @@ public record SchoolDto(
 
     @NotBlank(message = "address is required buddy")
     String address,
+
+    String verificationToken,
     
     String website
 ) {}

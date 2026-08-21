@@ -39,7 +39,7 @@ public class SchoolService {
 
     }
 
-    public void verifySchool(String token, String response) {
+    public void verifySchool(UUID token, String response) {
         
         School school = schoolRepo.findByVerificationToken(token).orElse(null);
 
@@ -51,14 +51,21 @@ public class SchoolService {
             // TODO: reject some 
         }
 
-        if(response.equals("yes")) {
+        if(response.equalsIgnoreCase("yes")) {
             school.setVerified(true);
+            school.setVerificationToken(null);
+            school.setVerifiedAt(LocalDateTime.now());
+
+            schoolRepo.save(school);
+            return;
         }
 
-        if(response.equals("no")) {
+        if(response.equalsIgnoreCase("no")) {
             school.setVerified(false);
+            school.setVerificationToken(null);
+            
+            schoolRepo.save(school);
         }
-
 
     }
 

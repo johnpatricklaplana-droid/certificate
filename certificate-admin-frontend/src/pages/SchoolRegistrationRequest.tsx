@@ -8,6 +8,7 @@ interface SchoolRequest {
     address: string;
     website: string;
     logoUrl: string;
+    verificationToken: string;
 }
 
 export default function SchoolRegistrationRequests() {
@@ -19,7 +20,7 @@ export default function SchoolRegistrationRequests() {
         const body = {
             toEmail: school.email,
             schoolName: school.name,
-            token: "TODO"
+            token: school.verificationToken
         };
         
         const result = await post('http://localhost:8080/api/platform-admin/email/school', body);
