@@ -7,6 +7,7 @@ interface SchoolRequest {
     email: string;
     address: string;
     website: string;
+    logoUrl: string;
 }
 
 export default function SchoolRegistrationRequests() {
@@ -71,9 +72,7 @@ export default function SchoolRegistrationRequests() {
                 <div className="border border-gray-200 rounded-xl overflow-hidden bg-white divide-y divide-gray-100">
                     {requests.map((r) => (
                         <div key={r.id} className="p-5 flex gap-4">
-                            <div className="w-10 h-10 shrink-0 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center text-sm font-medium">
-                                {r.name.slice(0, 2).toUpperCase()}
-                            </div>
+                            <img src={r.logoUrl} className="w-10 h-10 shrink-0 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center text-sm font-medium" />
 
                             <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-gray-900">{r.name}</p>

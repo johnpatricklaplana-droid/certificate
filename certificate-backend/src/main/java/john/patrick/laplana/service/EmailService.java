@@ -19,8 +19,8 @@ public class EmailService {
     private String resendApiKey;
 
     public void sendVerificationEmail(VerificationEmailRequests vER) {
-        String yesLink = "http://localhost:8080/api/schools/verify?token=" + vER.token() + "&response=yes";
-        String noLink = "http://localhost:8080/api/schools/verify?token=" + vER.token() + "&response=no";
+        String yesLink = "http://localhost:8080/api/public/schools/verify?token=" + vER.token() + "&response=yes";
+        String noLink = "http://localhost:8080/api/public/schools/verify?token=" + vER.token() + "&response=no";
 
         String htmlBody = """
             <p>Hi,</p>
@@ -47,6 +47,5 @@ public class EmailService {
             .retrieve()
             .toBodilessEntity();
     }
-
 
 }

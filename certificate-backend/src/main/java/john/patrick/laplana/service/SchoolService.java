@@ -39,4 +39,27 @@ public class SchoolService {
 
     }
 
+    public void verifySchool(String token, String response) {
+        
+        School school = schoolRepo.findByVerificationToken(token).orElse(null);
+
+        if(school == null) {
+            // TODO: 
+        }
+
+        if(LocalDateTime.now().isAfter(school.getTokenExpiresAt())) {
+            // TODO: reject some 
+        }
+
+        if(response.equals("yes")) {
+            school.setVerified(true);
+        }
+
+        if(response.equals("no")) {
+            school.setVerified(false);
+        }
+
+
+    }
+
 }
