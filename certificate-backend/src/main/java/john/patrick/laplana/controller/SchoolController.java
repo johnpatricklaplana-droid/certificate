@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import john.patrick.laplana.dto.GlobalResponse;
 import john.patrick.laplana.dto.SchoolDto;
+import john.patrick.laplana.dto.SchoolWithAdminDto;
 import john.patrick.laplana.entities.School;
 import john.patrick.laplana.helpers.ResponseHelper;
 import john.patrick.laplana.service.SchoolService;
@@ -30,10 +31,10 @@ public class SchoolController {
     
     @PostMapping("/api/public/school")
     public ResponseEntity<GlobalResponse> postMethodName(
-        @RequestPart("school") SchoolDto school,
+        @RequestPart("school") SchoolWithAdminDto sWAD,
         @RequestPart("schoolLogo") MultipartFile schoolLogo
     ) {
-        schoolService.registerSchool(school, schoolLogo);
+        schoolService.registerSchool(sWAD, schoolLogo);
         
         return ResponseHelper.createdResponse("successful one");
     }

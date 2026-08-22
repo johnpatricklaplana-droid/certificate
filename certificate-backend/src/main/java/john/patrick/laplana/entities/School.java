@@ -1,10 +1,13 @@
 package john.patrick.laplana.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,5 +49,8 @@ public class School extends BaseEntity {
 
     @Column(name = "verified_at")
     private LocalDateTime verifiedAt;
+
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
+    private List<SchoolAdmin> schoolAdmins;
 
 }
